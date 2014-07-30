@@ -5,8 +5,9 @@ feature "Creating Tickets" do
   before do
     project = FactoryGirl.create(:project)
     @user = FactoryGirl.create(:user)
-
+    define_permission!(@user, "view", project)
     sign_in_as! @user
+    
     click_link project.name
     click_link "New Ticket"
   end
