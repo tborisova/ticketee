@@ -1,10 +1,13 @@
 require 'rails_helper'
 
 feature "Creating Tickets" do
+
   before do
-    FactoryGirl.create(:project, name: "Internet Explorer")
-    visit '/'
-    click_link "Internet Explorer"
+    project = FactoryGirl.create(:project)
+    @user = FactoryGirl.create(:user)
+
+    sign_in_as! @user
+    click_link project.name
     click_link "New Ticket"
   end
 
@@ -13,6 +16,10 @@ feature "Creating Tickets" do
     fill_in "Description", with: "My pages are ugly!"
     click_button "Create Ticket"
     expect(page).to have_content("Ticket has been created.")
+
+    within "#ticket #author" do
+      expect(page).to have_content("Created by #{@user.email}")
+    end
   end
   
   scenario "Creating a ticket without valid attributes fails" do

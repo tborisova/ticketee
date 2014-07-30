@@ -1,15 +1,17 @@
 require 'rails_helper'
 
 feature "Viewing tickets" do
+
   before do
+    user = FactoryGirl.create(:user)
     textmate_2 = FactoryGirl.create(:project, name: "TextMate 2")
     FactoryGirl.create(:ticket, project: textmate_2, title: "Make it shiny!",
-                        description: "Gradients! Starbursts! Oh my!")
+                        description: "Gradients! Starbursts! Oh my!", user: user)
 
     internet_explorer = FactoryGirl.create(:project, name: "Internet Explorer")
     FactoryGirl.create(:ticket, project: internet_explorer, title: "Standards compliance",
-                        description: "Isn't a joke.")
-    visit '/' 
+                        description: "Isn't a joke.", user: user)
+    sign_in_as! user
   end
 
   scenario "Viewing tickets for a given project" do
