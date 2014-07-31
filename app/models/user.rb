@@ -6,4 +6,5 @@ class User < ActiveRecord::Base
 
   scope :admin, -> { where(admin: true) }
   scope :by_name, -> { order(:name) }
+  has_many :permissions
 end
